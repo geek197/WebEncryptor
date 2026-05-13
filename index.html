@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WebCrypto AES-GCM Encryptor</title>
+    <title>WebEncryptor</title>
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -298,7 +298,7 @@
 <body>
 
 <header>
-    <h1>WebCrypto AES-GCM Tool</h1>
+    <h1>WebEncryptor</h1>
     <p>Client-side encryption &amp; decryption in your browser</p>
 </header>
 
@@ -356,7 +356,7 @@
 <footer>
     <p>
         Key derivation: <code>PBKDF2</code> with <code>HMAC-SHA-256</code>, ~3s adaptive iterations &mdash;
-        Encryption: <code>AES-GCM</code>, 128-bit key, 12-byte random IV<br>
+        Encryption: <code>AES-GCM</code>, 256-bit key, 12-byte random IV<br>
         All operations run locally in your browser via the <code>Web Crypto API</code>. No data is transmitted.
     </p>
 </footer>
@@ -486,7 +486,7 @@
         const t0 = performance.now();
         await crypto.subtle.deriveKey(
             { name: 'PBKDF2', salt: salt, iterations: iters, hash: 'SHA-256' },
-            keyMat, { name: 'AES-GCM', length: 128 }, false, ['encrypt']
+            keyMat,            { name: 'AES-GCM', length: 256 }, false, ['encrypt']
         );
         const t1 = performance.now();
 
@@ -512,7 +512,7 @@
                 hash: 'SHA-256'
             },
             keyMaterial,
-            { name: 'AES-GCM', length: 128 },
+            { name: 'AES-GCM', length: 256 },
             false,
             ['encrypt', 'decrypt']
         );
@@ -606,7 +606,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Encrypted Message - Decrypt</title>
+    <title>WebEncryptor - Decrypt</title>
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         body {
@@ -815,7 +815,7 @@
 <footer>
     <p>
         Key derivation: <code>PBKDF2</code> with <code>HMAC-SHA-256</code>, adaptive iterations &mdash;
-        Encryption: <code>AES-GCM</code>, 128-bit key, 12-byte random IV<br>
+        Encryption: <code>AES-GCM</code>, 256-bit key, 12-byte random IV<br>
         All operations run locally in your browser via the <code>Web Crypto API</code>. No data is transmitted.
     </p>
 </footer>
@@ -858,7 +858,7 @@
         return await crypto.subtle.deriveKey(
             { name: 'PBKDF2', salt: salt, iterations: iterations, hash: 'SHA-256' },
             keyMaterial,
-            { name: 'AES-GCM', length: 128 },
+            { name: 'AES-GCM', length: 256 },
             false,
             ['encrypt', 'decrypt']
         );

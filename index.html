@@ -491,7 +491,7 @@
         const t1 = performance.now();
 
         const estimated = Math.round((iters * 3000) / (t1 - t0));
-        return Math.max(iters, Math.min(estimated, 500000000));
+        return Math.max(iters, Math.min(estimated, 50000000));
     }
 
     async function deriveKey(password, salt, iterations) {
@@ -558,7 +558,7 @@
             throw new Error('Ciphertext is missing required fields (s, i, d).');
         }
 
-        const iterations = parsed.n || 10000000;
+        const iterations = Math.min(parsed.n || 10000000, 50000000);
         const salt = Uint8Array.from(atob(parsed.s), c => c.charCodeAt(0));
         const iv = Uint8Array.from(atob(parsed.i), c => c.charCodeAt(0));
         const data = Uint8Array.from(atob(parsed.d), c => c.charCodeAt(0));
@@ -871,7 +871,7 @@
         try {
             const parsed = JSON.parse(CIPHERTEXT);
             if (!parsed.s || !parsed.i || !parsed.d) throw new Error('Invalid ciphertext data.');
-            const iterations = parsed.n || 10000000;
+            const iterations = Math.min(parsed.n || 10000000, 50000000);
             const salt = Uint8Array.from(atob(parsed.s), c => c.charCodeAt(0));
             const iv = Uint8Array.from(atob(parsed.i), c => c.charCodeAt(0));
             const data = Uint8Array.from(atob(parsed.d), c => c.charCodeAt(0));

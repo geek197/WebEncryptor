@@ -5,14 +5,21 @@ A single-file, client-side encryption and decryption tool that runs entirely in 
 ## Features
 
 - **AES-GCM encryption/decryption** with 256-bit keys and 12-byte random IVs
-- **PBKDF2 key derivation** using HMAC-SHA-256 with adaptive iteration benchmarking (~3s target)
+- **Argon2id key derivation** via [hash-wasm](https://www.npmjs.com/package/hash-wasm), with configurable parameters (defaults: 10 iterations, 1 parallelism, 64 MiB memory)
+- **Chained derivation ("steps")** — each Argon2id output feeds the next call (default 1000), with a per-step progress bar, remaining-time estimate and cancel button
+- **Parameters stored in the ciphertext** so decryption always uses the same Argon2id settings
 - **Standalone decryptor export** — generate a self-contained HTML file with embedded ciphertext to share with recipients
-- **Zero dependencies** — a single `index.html` file, no build step, no server required
 - **100% client-side** — all cryptographic operations run locally in the browser
 
 ## Usage
 
-Open `index.html` in any modern browser (Chrome, Firefox, Edge, Safari).
+```sh
+npm install
+npm run build   # produces dist/index.html (fully self-contained single file)
+npm run dev     # build + serve locally
+```
+
+Open `dist/index.html` in any modern browser (Chrome, Firefox, Edge, Safari).
 
 ### Encrypting
 
@@ -39,7 +46,10 @@ Encrypted output is a JSON object containing:
 {
   "s": "<base64 salt>",
   "i": "<base64 IV>",
-  "n": <iteration count>,
+  "t": <argon2id iterations>,
+  "p": <argon2id parallelism>,
+  "m": <argon2id memory in KiB>,
+  "steps": <number of chained argon2id calls>,
   "d": "<base64 ciphertext>"
 }
 ```
@@ -52,8 +62,11 @@ Encrypted output is a JSON object containing:
 | Key size | 256 bits |
 | IV size | 12 bytes (random per encryption) |
 | Salt size | 16 bytes (random per encryption) |
-| KDF | PBKDF2 with HMAC-SHA-256 |
-| Iterations | Adaptive, benchmarked to ~3s per device |
+| KDF | Argon2id (hash-wasm) |
+| Iterations (t) | Configurable, default 10 |
+| Parallelism (p) | Configurable, default 1 |
+| Memory (m) | Configurable, default 64 MiB (stored in KiB in the ciphertext) |
+| Steps | Configurable, default 1000; output of each Argon2id call is the password input of the next |
 
 ## Browser Support
 

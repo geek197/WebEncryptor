@@ -1,0 +1,22 @@
+{
+  "name": "webencryptor",
+  "version": "1.0.0",
+  "description": "A single-file, client-side encryption and decryption tool using the Web Crypto API.",
+  "private": true,
+  "scripts": {
+    "build": "node build.mjs",
+    "dev": "npm run build && serve -l tcp://127.0.0.1:3000 dist",
+    "start": "npm run build && serve -l tcp://127.0.0.1:3000 dist"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "esbuild": "^0.28.2",
+    "serve": "^14.2.4"
+  },
+  "overrides": {
+    "compression": "^1.8.2"
+  },
+  "dependencies": {
+    "hash-wasm": "^4.12.0"
+  }
+}

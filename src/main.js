@@ -23,6 +23,7 @@ function setMode(mode) {
     document.getElementById('outputLabel').textContent = mode === 'encrypt' ? 'Ciphertext (Base64)' : 'Plain Text';
     document.getElementById('plainTextField').style.display = mode === 'encrypt' ? '' : 'none';
     document.getElementById('cipherTextField').style.display = mode === 'decrypt' ? '' : 'none';
+    document.getElementById('passwordConfirmField').style.display = mode === 'encrypt' ? '' : 'none';
     document.getElementById('paramToggle').style.display = mode === 'encrypt' ? '' : 'none';
     document.getElementById('paramFields').style.display = (mode === 'encrypt' && paramsVisible) ? '' : 'none';
     hideError();
@@ -134,6 +135,7 @@ function resetOutput() {
 
 function clearAll() {
     document.getElementById('password').value = '';
+    document.getElementById('passwordConfirm').value = '';
     document.getElementById('plainText').value = '';
     document.getElementById('cipherText').value = '';
     hideError();
@@ -178,6 +180,10 @@ async function processAction() {
 
     if (!password) {
         showError('Password is required.');
+        return;
+    }
+    if (currentMode === 'encrypt' && password !== document.getElementById('passwordConfirm').value) {
+        showError('Passwords do not match.');
         return;
     }
     if (!input) {

@@ -20,11 +20,15 @@
         header {
             background: #161922;
             border-bottom: 1px solid #2a2d3a;
-            padding: 16px 24px;
-            text-align: center;
+            padding: 10px 24px;
+            display: flex;
+            justify-content: center;
+            align-items: baseline;
+            flex-wrap: wrap;
+            gap: 4px 12px;
         }
         header h1 {
-            font-size: 1.4rem;
+            font-size: 1.1rem;
             font-weight: 600;
             color: #7c8aff;
             letter-spacing: 0.5px;
@@ -32,7 +36,6 @@
         header p {
             font-size: 0.8rem;
             color: #6b7094;
-            margin-top: 4px;
         }
 
         main {
@@ -103,6 +106,10 @@
         .field textarea {
             resize: vertical;
             min-height: 120px;
+        }
+        .field textarea#plainText,
+        .field textarea#cipherText {
+            min-height: 360px;
         }
 
         .param-toggle {
@@ -416,7 +423,7 @@
 
     <div class="field">
         <label for="password">Password</label>
-        <input type="password" id="password" placeholder="Enter password for key derivation" autocomplete="off" oninput="updatePasswordStrength()">
+        <input type="password" id="password" placeholder="Enter password" autocomplete="off" oninput="updatePasswordStrength()">
         <div class="strength-meter" id="strengthMeter">
             <div class="strength-bar-track">
                 <div class="strength-bar-fill" id="strengthBarFill"></div>
@@ -436,8 +443,8 @@
     </div>
 
     <div class="field" id="cipherTextField" style="display:none;">
-        <label for="cipherText">Ciphertext (Base64)</label>
-        <textarea id="cipherText" placeholder="Paste Base64 ciphertext to decrypt"></textarea>
+        <label for="cipherText">Ciphertext</label>
+        <textarea id="cipherText" placeholder="Paste ciphertext to decrypt"></textarea>
     </div>
 
     <div class="btn-row">
@@ -489,7 +496,7 @@
     </div>
 
     <div class="field">
-        <label id="outputLabel" for="outputText">Ciphertext (Base64)</label>
+        <label id="outputLabel" for="outputText">Ciphertext</label>
         <div class="output-area">
             <pre id="outputText"><span class="placeholder">Output will appear here...</span></pre>
             <button class="copy-btn" id="copyBtn" onclick="copyOutput()">Copy</button>

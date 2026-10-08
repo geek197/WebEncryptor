@@ -20,10 +20,9 @@ function setMode(mode) {
     document.getElementById('btnEncrypt').classList.toggle('active', mode === 'encrypt');
     document.getElementById('btnDecrypt').classList.toggle('active', mode === 'decrypt');
     document.getElementById('btnAction').textContent = mode === 'encrypt' ? 'Encrypt' : 'Decrypt';
-    document.getElementById('outputLabel').textContent = mode === 'encrypt' ? 'Ciphertext (Base64)' : 'Plain Text';
+    document.getElementById('outputLabel').textContent = mode === 'encrypt' ? 'Ciphertext' : 'Plain Text';
     document.getElementById('plainTextField').style.display = mode === 'encrypt' ? '' : 'none';
     document.getElementById('cipherTextField').style.display = mode === 'decrypt' ? '' : 'none';
-    document.getElementById('passwordConfirmField').style.display = mode === 'encrypt' ? '' : 'none';
     document.getElementById('paramToggle').style.display = mode === 'encrypt' ? '' : 'none';
     document.getElementById('paramFields').style.display = (mode === 'encrypt' && paramsVisible) ? '' : 'none';
     hideError();
@@ -182,7 +181,7 @@ async function processAction() {
         showError('Password is required.');
         return;
     }
-    if (currentMode === 'encrypt' && password !== document.getElementById('passwordConfirm').value) {
+    if (password !== document.getElementById('passwordConfirm').value) {
         showError('Passwords do not match.');
         return;
     }
@@ -604,6 +603,10 @@ function generateDecryptorHTML(ciphertext) {
         <label for="password">Password</label>
         <input type="password" id="password" placeholder="Enter password" autocomplete="off">
     </div>
+    <div class="field">
+        <label for="passwordConfirm">Confirm Password</label>
+        <input type="password" id="passwordConfirm" placeholder="Re-enter password" autocomplete="off">
+    </div>
     <div class="btn-row">
         <button class="btn-primary" id="btnDecrypt" onclick="decrypt()">Decrypt</button>
     </div>
@@ -742,6 +745,7 @@ function generateDecryptorHTML(ciphertext) {
         cancelRequested = false;
         const password = document.getElementById('password').value;
         if (!password) { showError('Password is required.'); return; }
+        if (password !== document.getElementById('passwordConfirm').value) { showError('Passwords do not match.'); return; }
         document.getElementById('btnDecrypt').disabled = true;
         try {
             const parsed = JSON.parse(CIPHERTEXT);
